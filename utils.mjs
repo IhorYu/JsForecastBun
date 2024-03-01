@@ -41,6 +41,6 @@ export const addCity = async (city, latitude, longitude) => {
   await fs.writeFile("./cities.json", json);
 };
 
-export const getParsedUrl = async (req) => {
-  return new URL(req.url, `http://${req.headers.host}`);
-};
+// export const getParsedUrl = async (req) => {
+//   return new URL(req.url, `http://${req.headers.host}`);
+// };

@@ -35,7 +35,7 @@ export const getForecastForCityIes = async (city) => {
       : await getWeatherInCities(citiesArr);
     const data = JSON.stringify(result, null, 2);
     await fs.appendFile("./logs/" + Date.now() + ".txt", data + "\n");
-    return data;
+    return JSON.parse(data);
   } catch (err) {
     console.log(err);
   }
