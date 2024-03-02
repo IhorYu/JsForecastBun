@@ -1,13 +1,17 @@
 import express from "express";
+import path from "path";
 import {
   loadCities,
   getDataFromLogs,
   addCity,
-  getParsedUrl,
+  cityObjValidate,
 } from "./utils.mjs";
 import { getForecastForCityIes } from "./index.mjs";
 
+const PORT = process.env.PORT || 3000;
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (_, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
@@ -23,8 +27,10 @@ app.get("/cities", async (_, res) => {
     }, {});
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(citiesObj, null, 2));
+    return;
   } catch (error) {
     res.status(500).send("Internal Server Error");
+    return;
   }
 });
 
@@ -33,52 +39,55 @@ app.get("/forecast", async (_, res) => {
     const data = await getDataFromLogs();
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(data), null, 2);
+    return;
   } catch {
     res.status(500).send("Internal Server Error");
+    return;
   }
 });
 
-// TODO: .get('/cityForecast/:cityName', (...) => {...})
-app.get("/cityForecast", async (req, res) => {
+app.get("/cityForecast/:cityName", async (req, res) => {
+  const cityName = req.params.cityName.toLowerCase();
+  if (!cityName) {
+    res.status(400).json({ error: "No city query parameter provided" });
+    return;
+  }
   try {
-    const parsedUrl = await getParsedUrl(req);
-    const cityName = parsedUrl.searchParams.get("city");
-    if (cityName) {
-      const cityForecast = await getForecastForCityIes(cityName);
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(cityForecast);
-    } else {
-      res.writeHead(400, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ error: "No city query parameter provided" }));
-    }
+    const cityForecast = await getForecastForCityIes(cityName);
+    res.status(200).json(cityForecast);
+    return;
   } catch (error) {
+    console.log(error);
     res.status(500).send("Internal Server Error");
+    return;
   }
 });
 
-// TODO: move to post request (data would comes from body)
-app.get("/addCity", async (req, res) => {
+app.post("/city", async (req, res) => {
+  if (!req.body.city || !req.body.latitude || !req.body.longitude) {
+    res.status(400).send("Please provide city, latitude, and longitude");
+    return;
+  }
   try {
-    const parsedUrl = await getParsedUrl(req);
-    const latitude = parsedUrl.searchParams.get("latitude");
-    const longitude = parsedUrl.searchParams.get("longitude");
-    const city = parsedUrl.searchParams.get("city");
-    if (isNaN(+latitude) || isNaN(+longitude)) {
-      res.writeHead(200, { "Content-Type": "text/plain" });
-      res.end("Latitude and longitude must be numbers");
-    }
-    if (city && latitude && longitude) {
-      await addCity(city, latitude, longitude);
-      res.writeHead(200, { "Content-Type": "text/plain" });
-      res.end("City added successfully");
-    }
+    const city = await cityObjValidate.validate({
+      name: req.body.city.toLowerCase(),
+      latitude: req.body.latitude,
+      longitude: req.body.longitude,
+    });
+    await addCity(city);
+    res.status(200).send("City added successfully");
+    return;
   } catch (err) {
-    console.log(err);
-    res.status(500).send("Internal Server Error");
+    console.error(err);
+    res
+      .status(400)
+      .send(
+        `Invalid data input. Allowed data: city [string] - ${req.body.city}, latitude [number] - ${req.body.latitude}, longitude [number] - ${req.body.longitude}`
+      );
+    return;
   }
 });
 
-// TODO:  update to use variable
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000"); // TODO: here as well
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

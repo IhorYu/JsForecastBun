@@ -1,27 +1,17 @@
 [
   {
-    "name": "Kyiv",
+    "name": "kyiv",
     "latitude": 50.4547,
     "longitude": 30.5238
   },
   {
-    "name": "Frankfurt",
+    "name": "frankfurt",
     "latitude": 50.11403,
     "longitude": 8.68237
   },
   {
-    "name": "Oslo",
+    "name": "oslo",
     "latitude": 59.9134,
     "longitude": 10.73845
-  },
-  {
-    "name": "paris",
-    "latitude": 48.854728,
-    "longitude": 2.348491
-  },
-  {
-    "name": "paris",
-    "latitude": 48.854728,
-    "longitude": null
   }
 ]

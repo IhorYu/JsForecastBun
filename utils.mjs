@@ -1,4 +1,5 @@
 import fs from "fs/promises";
+import { object, string, number } from "yup";
 
 export const loadCities = async () => {
   try {
@@ -28,19 +29,16 @@ export const getDataFromLogs = async () => {
   }
 };
 
-export const addCity = async (city, latitude, longitude) => {
-  const cityObj = {
-    name: city.toLowerCase(),
-    latitude: +latitude,
-    longitude: +longitude,
-  };
+export const addCity = async (city) => {
   const data = await fs.readFile("./cities.json", "utf8");
   const cities = JSON.parse(data);
-  cities.push(cityObj);
+  cities.push(city);
   const json = JSON.stringify(cities, null, 2);
   await fs.writeFile("./cities.json", json);
 };
 
-export const getParsedUrl = async (req) => {
-  return new URL(req.url, `http://${req.headers.host}`);
-};
+export const cityObjValidate = object({
+  longitude: number().required().min(-180).max(180),
+  latitude: number().required().min(-90).max(90),
+  name: string().required(),
+});
