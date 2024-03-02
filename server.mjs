@@ -63,11 +63,6 @@ app.get("/cityForecast/:cityName", async (req, res) => {
   }
 });
 
-app.get("/addCity", (_, res) => {
-  res.sendFile(path.join(__dirname, "templates/add_city.html"));
-  return;
-});
-
 app.post("/city", async (req, res) => {
   if (!req.body.city || !req.body.latitude || !req.body.longitude) {
     res.status(400).send("Please provide city, latitude, and longitude");
