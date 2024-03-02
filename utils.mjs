@@ -38,7 +38,7 @@ export const addCity = async (city) => {
 };
 
 export let cityObjValidate = object({
-  longitude: number().required().positive(),
-  latitude: number().required().positive(),
+  longitude: number().required().min(-180).max(180),
+  latitude: number().required().min(-90).max(90),
   name: string().required(),
 });

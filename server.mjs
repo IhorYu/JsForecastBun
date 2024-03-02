@@ -74,7 +74,7 @@ app.post("/city", async (req, res) => {
     return;
   }
   try {
-    const city = cityObjValidate.cast({
+    const city = await cityObjValidate.validate({
       name: req.body.city.toLowerCase(),
       latitude: req.body.latitude,
       longitude: req.body.longitude,
