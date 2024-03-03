@@ -9,7 +9,7 @@ const getWeatherInCities = async (citiesArr) => {
   );
 };
 
-export const getForecastForCityIes = async (city) => {
+export const getCityForecast = async (city) => {
   const citiesArr = await loadCities();
   if (city && !citiesArr.find((cityObj) => cityObj.name === city)) {
     throw new TypeError("The specified city is not supported");
