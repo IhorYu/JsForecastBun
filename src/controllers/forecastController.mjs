@@ -1,4 +1,4 @@
-import { getForecastFromAPI } from "../api/forecastAPI.mjs";
+import { getForecastFromAPI } from "../services/forecast.mjs";
 import { loadCities } from "./citiesController.mjs";
 import { appendFileAsync } from "../utils/fileUtils.mjs";
 import { BASEDIR } from "../../config.mjs";
