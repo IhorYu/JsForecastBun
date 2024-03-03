@@ -27,11 +27,10 @@ export const getDataFromLogs = async () => {
       fs.readFile(`${BASEDIR}/data/logs/${file}`, "utf8")
     );
     const filesData = await Promise.all(dataPromises);
-    const dataObj = files.reduce((acc, file, index) => {
+    return files.reduce((acc, file, index) => {
       acc[file] = JSON.parse(filesData[index]);
       return acc;
     }, {});
-    return dataObj;
   } catch (error) {
     console.error("Reading log file error:", error);
     return {};
