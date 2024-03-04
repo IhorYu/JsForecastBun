@@ -7,7 +7,6 @@ import {
 const router = express.Router();
 
 router.get("/", getForecastForAllCities);
-
 router.get("/:cityName", getForecastForCity);
 
 export default router;
