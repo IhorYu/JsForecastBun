@@ -47,8 +47,7 @@ export const addCountry = async (req, res) => {
     ) {
       return res.status(409).json({ message: "Country already exists." });
     }
-    const newCountry = { name, flag };
-    countriesData.push(newCountry);
+    countriesData.push({ name, flag });
 
     await writeFile(
       countriesPath,
