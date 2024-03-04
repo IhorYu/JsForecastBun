@@ -2,7 +2,8 @@
   {
     "name": "kyiv",
     "latitude": 50.4547,
-    "longitude": 30.5238
+    "longitude": 30.5238,
+    "country": "Ukraine"
   },
   {
     "name": "frankfurt",
