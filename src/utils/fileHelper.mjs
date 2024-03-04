@@ -18,3 +18,13 @@ export const appendFile = async (filePath, data) => {
     throw error;
   }
 };
+
+export const writeFile = async (filePath, data) => {
+  try {
+    const json = JSON.stringify(data, null, 2);
+    await fs.writeFile(filePath, json, "utf8");
+  } catch (error) {
+    console.error("Writing file error:", error);
+    throw error;
+  }
+};

@@ -1,0 +1,9 @@
+{
+  "date": "Fri, 01 Mar 2024 17:36:58 GMT",
+  "city": "kyiv",
+  "currentTemperature": 4.7,
+  "currentWindSpeed": 7.3,
+  "currentTimeZone": "GMT",
+  "currentLatitude": 50.4547,
+  "currentLongitude": 30.5238
+}

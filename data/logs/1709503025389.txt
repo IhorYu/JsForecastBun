@@ -1,0 +1,8 @@
+{
+  "date": "Sun, 03 Mar 2024 21:57:05 GMT",
+  "currentTemperature": 4.9,
+  "currentWindSpeed": 15.5,
+  "currentTimeZone": "GMT",
+  "currentLatitude": 59.9134,
+  "currentLongitude": 10.73845
+}

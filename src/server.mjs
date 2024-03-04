@@ -1,6 +1,6 @@
 import express from "express";
-import citiesRoutes from "./routes/citiesRoutes.mjs";
-import forecastRoutes from "./routes/forecastRoutes.mjs";
+import forecastRoutes from "./routes/forecast.mjs";
+import infoRoutes from "./routes/info.mjs";
 import { PORT } from "../config.mjs";
 
 const app = express();
@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/forecast", forecastRoutes);
-app.use("/cities", citiesRoutes);
+app.use("/info", infoRoutes);
 
 app.get("/", (_, res) => res.send("Alive\n"));
 
