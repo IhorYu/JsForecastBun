@@ -3,12 +3,12 @@ import { BASEDIR } from "../../config.mjs";
 import { cityObjValidate } from "../utils/dataValidation.mjs";
 
 const getCities = async () => {
-  return await getFileData("./data/cities.json");
+  return await getFileData(`${BASEDIR}/data/cities.json`);
 };
 
 export const getCity = async (req, res) => {
   try {
-    const cities = await getFileData("./data/cities.json");
+    const cities = await getFileData(`${BASEDIR}/data/cities.json`);
     const city = cities.find(
       (city) => city.name.toLowerCase() === req.params.cityName.toLowerCase()
     );
@@ -29,9 +29,9 @@ export const addCity = async (req, res) => {
     !req.body.longitude ||
     !req.body.country
   ) {
-    res
-      .status(400)
-      .send("Please provide city, latitude, longitude, and country");
+    res.status(400).json({
+      message: "Please provide city, latitude, longitude, and country",
+    });
     return;
   }
   try {
@@ -60,7 +60,7 @@ export const addCity = async (req, res) => {
     ]);
     cities.push(city);
     await writeFile(`${BASEDIR}/data/cities.json`, cities);
-    res.status(200).send("City added successfully");
+    res.status(200).json({ message: "City added successfully" });
     return;
   } catch (err) {
     console.error(err);
@@ -83,6 +83,6 @@ export const getAllCities = async (_, res) => {
     res.status(200).json(citiesObj);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
