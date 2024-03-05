@@ -1,10 +1,11 @@
 import { getForecastByCity } from "../services/forecast.mjs";
 import { getFileData } from "../utils/fileHelper.mjs";
+import { CITIES_FILE_PATH } from "../../config.mjs";
 
 export const getForecastForCity = async (req, res) => {
   try {
     const cityName = req.params.cityName.toLowerCase();
-    const citiesData = await getFileData("./data/cities.json");
+    const citiesData = await getFileData(CITIES_FILE_PATH);
     const city = citiesData.find(
       (city) => city.name.toLowerCase() === cityName
     );

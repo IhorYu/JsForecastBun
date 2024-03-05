@@ -1,8 +1,8 @@
 import express from "express";
 import forecastRoutes from "./routes/forecast.mjs";
 import infoRoutes from "./routes/info.mjs";
-import { PORT } from "../config.mjs";
 import errorHandler from "./middleware/errorHandler.mjs";
+import { PORT } from "../config.mjs";
 
 // CONFIG
 const app = express();

@@ -1,14 +1,10 @@
 import { getFileData, writeFile } from "../utils/fileHelper.mjs";
-import { BASEDIR } from "../../config.mjs";
 import { cityObjValidate } from "../utils/dataValidation.mjs";
-
-const getCities = async () => {
-  return await getFileData(`${BASEDIR}/data/cities.json`);
-};
+import { CITIES_FILE_PATH, COUNTRIES_FILE_PATH } from "../../config.mjs";
 
 export const getCity = async (req, res) => {
   try {
-    const cities = await getFileData(`${BASEDIR}/data/cities.json`);
+    const cities = await getFileData(CITIES_FILE_PATH);
     const city = cities.find(
       (city) => city.name.toLowerCase() === req.params.cityName.toLowerCase()
     );
@@ -35,7 +31,7 @@ export const addCity = async (req, res) => {
     return;
   }
   try {
-    const countries = await getFileData(`${BASEDIR}/data/countries.json`);
+    const countries = await getFileData(COUNTRIES_FILE_PATH);
     const isValidCountry = countries.some(
       (country) => country.name === req.body.country
     );
@@ -56,10 +52,10 @@ export const addCity = async (req, res) => {
         longitude: req.body.longitude,
         country: req.body.country,
       }),
-      getFileData(`${BASEDIR}/data/cities.json`),
+      getFileData(CITIES_FILE_PATH),
     ]);
     cities.push(city);
-    await writeFile(`${BASEDIR}/data/cities.json`, cities);
+    await writeFile(CITIES_FILE_PATH, cities);
     res.status(200).json({ message: "City added successfully" });
     return;
   } catch (err) {
@@ -75,7 +71,7 @@ export const addCity = async (req, res) => {
 
 export const getAllCities = async (_, res) => {
   try {
-    const citiesArray = await getCities();
+    const citiesArray = await getFileData(CITIES_FILE_PATH);
     const citiesObj = citiesArray.reduce((obj, city) => {
       obj[city.name] = { Latitude: city.latitude, Longitude: city.longitude };
       return obj;
@@ -84,5 +80,48 @@ export const getAllCities = async (_, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const updateCity = async (req, res) => {
+  const cityName = req.params.cityName.toLowerCase();
+  const latitude = req.body.latitude;
+  const longitude = req.body.longitude;
+  const country = req.body.country;
+  try {
+    const cities = await getFileData(CITIES_FILE_PATH);
+    const cityIndex = cities.findIndex(
+      (city) => city.name.toLowerCase() === cityName
+    );
+    if (cityIndex === -1) {
+      return res.status(400).json({ message: "City not found" });
+    }
+    const updatedCity = { ...cities[cityIndex], latitude, longitude, country };
+    cities[cityIndex] = updatedCity;
+
+    await writeFile(CITIES_FILE_PATH, cities);
+    res.status(200).json({ message: `city ${cityName} updated` });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error updating city" });
+  }
+};
+
+export const deleteCity = async (req, res) => {
+  const cityName = req.params.cityName.toLowerCase();
+
+  try {
+    const cities = await getFileData(CITIES_FILE_PATH);
+    const filteredCities = cities.filter(
+      (city) => city.name.toLowerCase() !== cityName
+    );
+    if (cities.length === filteredCities.length) {
+      return res.status(400).json({ message: "City not found" });
+    }
+    await writeFile(CITIES_FILE_PATH, filteredCities);
+    res.status(200).json({ message: "City deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error deleting city" });
   }
 };

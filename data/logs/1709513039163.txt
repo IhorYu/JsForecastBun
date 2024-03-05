@@ -1,9 +1,0 @@
-{
-  "date": "Mon, 04 Mar 2024 00:43:59 GMT",
-  "city": "oslo",
-  "currentTemperature": 5,
-  "currentWindSpeed": 17.3,
-  "currentTimeZone": "GMT",
-  "currentLatitude": 59.9134,
-  "currentLongitude": 10.73845
-}
