@@ -3,18 +3,21 @@
     "country": "Ukraine",
     "name": "kyiv",
     "latitude": 50.4547,
-    "longitude": 30.5238
+    "longitude": 30.5238,
+    "isFavorite": true
   },
   {
     "country": "Germany",
     "name": "frankfurt",
     "latitude": 50.11403,
-    "longitude": 8.68237
+    "longitude": 8.68237,
+    "isFavorite": false
   },
   {
     "country": "Norway",
     "name": "oslo",
     "latitude": 59.9134,
-    "longitude": 10.73845
+    "longitude": 10.73845,
+    "isFavorite": false
   }
 ]
