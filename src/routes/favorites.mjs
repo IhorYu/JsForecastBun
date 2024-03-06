@@ -1,7 +1,6 @@
 import express from "express";
 import {
-  addCityToFavorites,
-  deleteCityFromFavorites,
+  toggleCityFavorite,
   getFavorites,
   getFavoriteCity,
   getFavoritesByCountry,
@@ -10,8 +9,7 @@ import {
 const router = express.Router();
 
 router.get("/", getFavorites);
-router.put("/add/:cityName", addCityToFavorites);
-router.delete("/delete/:cityName", deleteCityFromFavorites);
+router.put("/:cityName", toggleCityFavorite);
 router.get("/:cityName", getFavoriteCity);
 router.get("/country/:countryName", getFavoritesByCountry);
 

@@ -1,30 +1,9 @@
 import { getFileData, writeFile } from "../utils/fileHelper.mjs";
 import { CITIES_FILE_PATH } from "../../config.mjs";
 
-export const addCityToFavorites = async (req, res) => {
+export const toggleCityFavorite = async (req, res) => {
   const cityName = req.params.cityName.toLowerCase();
-  try {
-    const cities = await getFileData(CITIES_FILE_PATH);
-    const cityIndex = cities.findIndex(
-      (city) => city.name.toLowerCase() === cityName
-    );
-    if (cityIndex === -1) {
-      return res.status(400).json({ message: "City not found" });
-    }
-    cities[cityIndex].isFavorite = true;
-    await writeFile(CITIES_FILE_PATH, cities);
-    res
-      .status(200)
-      .json({ message: `City ${cityName} added to favorites successfully` });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Error adding city to favorites" });
-  }
-};
-
-export const deleteCityFromFavorites = async (req, res) => {
-  const cityName = req.params.cityName.toLowerCase();
-
+  const addToFavorites = req.body.addToFavorites;
   try {
     const cities = await getFileData(CITIES_FILE_PATH);
     const cityIndex = cities.findIndex(
@@ -34,15 +13,23 @@ export const deleteCityFromFavorites = async (req, res) => {
     if (cityIndex === -1) {
       return res.status(400).json({ message: "City not found" });
     }
-    cities[cityIndex].isFavorite = false;
+
+    if (addToFavorites === "true") {
+      cities[cityIndex].isFavorite = true;
+      res
+        .status(200)
+        .json({ message: `City ${cityName} added to favorites successfully` });
+    } else {
+      delete cities[cityIndex].isFavorite;
+      res.status(200).json({
+        message: `City ${cityName} removed from favorites successfully`,
+      });
+    }
 
     await writeFile(CITIES_FILE_PATH, cities);
-    res.status(200).json({
-      message: `City ${cityName} removed from favorites successfully`,
-    });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Error deleting city to favorites" });
+    console.error(err);
+    res.status(500).json({ message: "Error updating city favorite status" });
   }
 };
 
