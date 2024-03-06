@@ -20,7 +20,8 @@ export const toggleCityFavorite = async (req, res) => {
         .status(200)
         .json({ message: `City ${cityName} added to favorites successfully` });
     } else {
-      delete cities[cityIndex].isFavorite;
+      const { isFavorite, ...updatedCity } = cities[cityIndex];
+      cities.splice(cityIndex, 1, updatedCity);
       res.status(200).json({
         message: `City ${cityName} removed from favorites successfully`,
       });
