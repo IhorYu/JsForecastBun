@@ -6,5 +6,3 @@ export const BASEDIR = path.dirname(__filename);
 export const PORT = process.env.PORT || 3000;
 export const CITIES_FILE_PATH = `${BASEDIR}/data/cities.json`;
 export const COUNTRIES_FILE_PATH = `${BASEDIR}/data/countries.json`;
-
-console.log(process.env.BASEDIR);

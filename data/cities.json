@@ -3,7 +3,8 @@
     "country": "Ukraine",
     "name": "kyiv",
     "latitude": 50.4547,
-    "longitude": 30.5238
+    "longitude": 30.5238,
+    "isFavorite": true
   },
   {
     "country": "Germany",

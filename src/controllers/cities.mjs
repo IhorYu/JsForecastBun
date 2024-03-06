@@ -88,6 +88,7 @@ export const updateCity = async (req, res) => {
   const latitude = req.body.latitude;
   const longitude = req.body.longitude;
   const country = req.body.country;
+  const isFavorite = req.body.isFavorite;
   try {
     const cities = await getFileData(CITIES_FILE_PATH);
     const cityIndex = cities.findIndex(
@@ -96,7 +97,13 @@ export const updateCity = async (req, res) => {
     if (cityIndex === -1) {
       return res.status(400).json({ message: "City not found" });
     }
-    const updatedCity = { ...cities[cityIndex], latitude, longitude, country };
+    const updatedCity = {
+      ...cities[cityIndex],
+      latitude,
+      longitude,
+      country,
+      isFavorite,
+    };
     cities[cityIndex] = updatedCity;
 
     await writeFile(CITIES_FILE_PATH, cities);
