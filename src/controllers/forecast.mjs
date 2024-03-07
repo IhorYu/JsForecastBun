@@ -42,7 +42,7 @@ export const getForecastForCity = async (req, res) => {
 export const getForecastForAllCities = async (_, res) => {
   try {
     const cities = await getFileData(CITIES_FILE_PATH);
-    cities.forEach(async (city) => await checkUpdate(city));
+    const weatherByCities = await Promise.all(cities.map(city => checkUpdate(city)));
 
     res.status(200).json(await getFileData(WEATHER_LOG_FILE_PATH));
   } catch (err) {
