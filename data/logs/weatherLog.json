@@ -1,0 +1,29 @@
+{
+  "kyiv": {
+    "lastUpdate": "Thu, 07 Mar 2024 11:09:11 GMT",
+    "city": "kyiv",
+    "currentTemperature": -0.2,
+    "currentWindSpeed": 6.8,
+    "currentTimeZone": "GMT",
+    "currentLatitude": 50.4547,
+    "currentLongitude": 30.5238
+  },
+  "frankfurt": {
+    "lastUpdate": "Thu, 07 Mar 2024 11:07:06 GMT",
+    "city": "frankfurt",
+    "currentTemperature": 6.9,
+    "currentWindSpeed": 9.2,
+    "currentTimeZone": "GMT",
+    "currentLatitude": 50.11403,
+    "currentLongitude": 8.68237
+  },
+  "oslo": {
+    "lastUpdate": "Thu, 07 Mar 2024 11:13:24 GMT",
+    "city": "oslo",
+    "currentTemperature": 2.8,
+    "currentWindSpeed": 4.7,
+    "currentTimeZone": "GMT",
+    "currentLatitude": 59.9134,
+    "currentLongitude": 10.73845
+  }
+}

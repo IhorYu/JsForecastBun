@@ -5,7 +5,7 @@ export const getForecastByCity = async (cityObj) => {
   const response = await axios.get(url);
   const result = response.data;
   return {
-    date: new Date().toUTCString(),
+    lastUpdate: new Date().toUTCString(),
     city: cityObj.name,
     currentTemperature: result.current.temperature_2m,
     currentWindSpeed: result.current.wind_speed_10m,
