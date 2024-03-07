@@ -28,7 +28,7 @@ export const getForecastForCity = async (req, res) => {
     if (!city) {
       return res.status(404).json({ message: "City not found" });
     }
-    checkUpdate(city);
+    await checkUpdate(city);
     res.status(200).json((await getFileData(WEATHER_LOG_FILE_PATH))[cityName]);
   } catch (err) {
     console.error(error);
