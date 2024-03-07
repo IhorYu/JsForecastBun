@@ -1,23 +1,6 @@
 import { getForecastByCity } from "../services/forecast.mjs";
-import { getFileData, writeFile } from "../utils/fileHelper.mjs";
-import { CITIES_FILE_PATH, WEATHER_LOG_FILE_PATH } from "../../config.mjs";
-
-const checkUpdate = async (city) => {
-  const cityName = city.name.toLowerCase();
-  const weatherLog = await getFileData(WEATHER_LOG_FILE_PATH);
-  const cityWeather = weatherLog[cityName];
-  const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
-  const needUpdate =
-    !cityWeather || new Date(cityWeather.lastUpdate).getTime() < twoHoursAgo;
-
-  if (needUpdate) {
-    const forecast = await getForecastByCity(city);
-    weatherLog[cityName] = {
-      ...forecast,
-    };
-  }
-  await writeFile(WEATHER_LOG_FILE_PATH, weatherLog);
-};
+import { getFileData } from "../utils/fileHelper.mjs";
+import { CITIES_FILE_PATH } from "../../config.mjs";
 
 export const getForecastForCity = async (req, res) => {
   try {
@@ -28,10 +11,10 @@ export const getForecastForCity = async (req, res) => {
     if (!city) {
       return res.status(404).json({ message: "City not found" });
     }
-    await checkUpdate(city);
-    res.status(200).json((await getFileData(WEATHER_LOG_FILE_PATH))[cityName]);
+    const forecast = await getForecastByCity(city);
+    res.status(200).json(forecast);
   } catch (err) {
-    console.error(error);
+    console.error(err);
     res.status(400).json({ message: "Error getting forecast for city" });
     res
       .status(500)
@@ -42,9 +25,12 @@ export const getForecastForCity = async (req, res) => {
 export const getForecastForAllCities = async (_, res) => {
   try {
     const cities = await getFileData(CITIES_FILE_PATH);
-    const weatherByCities = await Promise.all(cities.map(city => checkUpdate(city)));
-
-    res.status(200).json(await getFileData(WEATHER_LOG_FILE_PATH));
+    const forecasts = [];
+    for (const city of cities) {
+      const forecast = await getForecastByCity(city);
+      forecasts.push(forecast);
+    }
+    res.status(200).json(forecasts);
   } catch (err) {
     console.error(err);
     res.status(400).json({ message: "Error getting forecast for all cities" });
