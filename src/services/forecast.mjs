@@ -6,7 +6,7 @@ import { isExpirationValid } from "../utils/expirationCheck.mjs";
 export const getForecastByCity = async (cityObj) => {
   const weatherLog = await getFileData(WEATHER_LOG_FILE_PATH);
   const cityWeather = weatherLog[cityObj.name];
-  if (cityWeather && (await isExpirationValid(cityWeather.lastUpdate))) {
+  if (cityWeather && isExpirationValid(cityWeather.lastUpdate)) {
     return cityWeather;
   } else {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${cityObj.latitude}&longitude=${cityObj.longitude}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m`;
